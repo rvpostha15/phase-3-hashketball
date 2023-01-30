@@ -1,3 +1,4 @@
+require 'pry'
 # Write your code below game_hash
 def game_hash
   {
@@ -125,5 +126,81 @@ def game_hash
     }
   }
 end
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#HELPER METHODS~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+def all_players 
+  game_hash[:home][:players] + game_hash[:away][:players]
+end
 
-# Write code here
+def teams 
+  game_hash[:home] + game_hash[:away]
+end
+
+#returns hash of player 
+def get_player_by_name(player_name)
+  all_players.find do |player|
+    player[:player_name] == player_name
+  end
+end
+
+#returns only one team hash 
+def get_team_by_name(team_name)
+  team_info = game_hash.find do |key, value|
+    value[:team_name] == team_name
+  end
+  team_info[1]
+end
+
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#END HELPER METHODS~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+
+#number of points scored by each player
+def num_points_scored(player_name)
+  get_player_by_name(player_name)[:points]
+end
+
+#shoe size of each player
+def shoe_size(player_name)
+  get_player_by_name(player_name)[:shoe]
+end
+
+#returns team colors
+def team_colors(team_name)
+  get_team_by_name(team_name)[:colors]
+end
+
+#returns team names as array
+def team_names
+  game_hash.collect do |home_away, team_info|
+    team_info[:team_name]
+  end
+end
+
+
+#returns player jersey numbers as an array for one team
+def player_numbers(team_name)
+  proper_team = game_hash.find do |key, value|
+    value[:team_name] == team_name
+  end
+  proper_team[1][:players].map do |player|
+    player[:number]
+  end
+end
+
+#returns all stats for given player
+def player_stats(player_name)
+  get_player_by_name(player_name)
+end
+
+#returns player with biggest shoe size
+def big_shoe_player
+    all_players.max_by do |player|
+      player[:shoe] 
+    end
+end
+
+#returns rebounds of player with biggest shoe size
+def big_shoe_rebounds
+  big_shoe_player[:rebounds]
+end
+
